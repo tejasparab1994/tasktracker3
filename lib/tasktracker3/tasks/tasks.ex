@@ -20,6 +20,7 @@ defmodule Tasktracker3.Tasks do
   def list_tasks do
     Repo.all(Task)
     |> Repo.preload(:user)
+    |> Repo.preload(:assigned)
   end
 
   @doc """

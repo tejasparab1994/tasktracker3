@@ -49,7 +49,9 @@ defmodule Seeds do
       user_id: c.id,
       assigned_id: d.id,
       title: "Hi, created by Carol",
-      body: "assigned to Dave"
+      body: "assigned to Dave",
+      time_taken: 30,
+      completed: true
     })
 
     Repo.insert!(%Task{
