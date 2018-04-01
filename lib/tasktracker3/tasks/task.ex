@@ -9,7 +9,7 @@ defmodule Tasktracker3.Tasks.Task do
     field(:time_taken, :integer)
     field(:title, :string)
     belongs_to(:assigned, Tasktracker3.Users.User, foreign_key: :assigned_id)
-    belong_to(:user, Tasktracker3.Users.User, foreign_key: :user_id)
+    belongs_to(:user, Tasktracker3.Users.User, foreign_key: :user_id)
 
     timestamps()
   end
