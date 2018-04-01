@@ -64,6 +64,12 @@ class Tasktracker extends React.Component {
           <Route path ="/tasks" exact={true} render={() =>
             <div>Hello from tasks</div>
           } />
+          <Route path ="/users/:id" render={({match}) =>
+
+            <Feed tasks = {_.filter(this.state.tasks, (pp) =>
+            match.params.id == pp.user.id)
+            } />
+          } />
 
         </div>
       </Router>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 
 function User(params) {
-  return <p>{params.user.name} - <Link to={"/users/" + params.user.id}>Tasks</Link></p>;
+  return <p>{params.user.name} - <Link to={"/users/" + params.user.id}>Your created Tasks</Link></p>;
     }
 
 export default function Users(params) {
