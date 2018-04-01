@@ -1,15 +1,15 @@
 defmodule Tasktracker3.Tasks.Task do
   use Ecto.Schema
   import Ecto.Changeset
-
+  alias Tasktracker3.Tasks.Task
 
   schema "tasks" do
-    field :body, :string
-    field :completed, :boolean, default: false
-    field :time_taken, :integer
-    field :title, :string
-    field :assigned_id, :id
-    field :user_id, :id
+    field(:body, :string)
+    field(:completed, :boolean, default: false)
+    field(:time_taken, :integer)
+    field(:title, :string)
+    belongs_to(:assigned, Tasktracker3.Users.User, foreign_key: :assigned_id)
+    belong_to(:user, Tasktracker3.Users.User, foreign_key: :user_id)
 
     timestamps()
   end
@@ -17,7 +17,14 @@ defmodule Tasktracker3.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :body, :time_taken, :completed])
+    |> cast(attrs, [:title, :body, :time_taken, :assigned_id, :completed])
     |> validate_required([:title, :body, :time_taken, :completed])
+    |> validate_change(:time_taken, fn :time_taken, f ->
+      if rem(f, 15) == 0 do
+        []
+      else
+        [time_taken: "Invalid input, not a multiple of 15"]
+      end
+    end)
   end
 end

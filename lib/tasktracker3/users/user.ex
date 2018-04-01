@@ -2,9 +2,8 @@ defmodule Tasktracker3.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "users" do
-    field :name, :string
+    field(:name, :string)
 
     timestamps()
   end
@@ -14,5 +13,6 @@ defmodule Tasktracker3.Users.User do
     user
     |> cast(attrs, [:name])
     |> validate_required([:name])
+    |> unique_constraint(:name)
   end
 end
