@@ -4,15 +4,17 @@ defmodule Tasktracker3.Users.User do
 
   schema "users" do
     field(:name, :string)
+    field(:password_hash, :string)
 
+    field(:password, :string, virtual: true)
     timestamps()
   end
 
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name, :password])
+    |> validate_required([:name, :password])
     |> unique_constraint(:name)
   end
 end

@@ -46,7 +46,32 @@ class TheServer {
       },
     });
   }
+
+  submit_login(data) {
+    console.log("ajax working?",data);
+    $.ajax("/api/v1/token", {
+      method: "post",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data),
+      success: (resp) => {
+        console.log("response", resp);
+        store.dispatch({
+          type: 'SET_TOKEN',
+          token: resp,
+        });
+      },
+      error: (resp) => {
+        store.dispatch({
+          type: 'SET_LOGIN_ERROR',
+          error: resp,
+        });
+      }
+    });
+  }
 }
+
+
 
 
 export default new TheServer();

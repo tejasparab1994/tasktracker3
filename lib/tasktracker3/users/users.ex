@@ -37,6 +37,23 @@ defmodule Tasktracker3.Users do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_and_auth_user(name, pass) do
+    case user = Repo.one(from(u in User, where: u.name == ^name)) do
+      nil ->
+        {:error, :not_found}
+
+      _ ->
+        case Comeonin.Argon2.check_pass(user, pass) do
+          {:ok, user} ->
+            {:ok, user}
+
+          {:error, message} ->
+            IO.puts("password authen unsuccessful")
+            {:error, "Login unsuccessful"}
+        end
+    end
+  end
+
   @doc """
   Creates a user.
 

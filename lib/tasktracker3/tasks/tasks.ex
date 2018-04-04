@@ -56,14 +56,15 @@ defmodule Tasktracker3.Tasks do
 
   """
   def create_task(attrs \\ %{}) do
-    {:ok, task} =
-      %Task{}
-      |> Task.changeset(attrs)
-      |> Repo.insert()
+    case %Task{} |> Task.changeset(attrs) |> Repo.insert() do
+      {:ok, task} ->
+        {:ok,
+         Repo.preload(task, :assigned)
+         |> Repo.preload(:user)}
 
-    {:ok,
-     Repo.preload(task, :assigned)
-     |> Repo.preload(:user)}
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 
   @doc """

@@ -17,4 +17,10 @@ defmodule Tasktracker3Web.FallbackController do
     |> put_status(:not_found)
     |> render(Tasktracker3Web.ErrorView, :"404")
   end
+
+  def call(conn, {:error, "Login unsuccessful"}) do
+    conn
+    |> put_status(:im_a_teapot)
+    |> render(Tasktracker3Web.ErrorView, :"418")
+  end
 end

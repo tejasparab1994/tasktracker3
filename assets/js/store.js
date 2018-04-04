@@ -16,8 +16,55 @@ Our state:
       completed: Boolean,
       time_taken: Number,
   },
+  token: {
+    id: Number,
+    token: String,
+  },
+    login: {
+      name: String,
+      pass: String
+  }
 }
 */
+
+function token(state = null, action) {
+  switch(action.type) {
+    case 'SET_TOKEN':
+      console.log("here in set token", action.token);
+      return action.token;
+    default:
+      return state;
+  }
+}
+
+
+let empty_login  = {
+  name: "",
+  pass: "",
+};
+
+function login(state= empty_login, action) {
+  switch (action.type) {
+    case 'UPDATE_LOGIN_FORM':
+      return Object.assign({}, state, action.data);
+    case 'SET_LOGIN_ERROR':
+    // You have error message here from api, return statement modify with that
+      return empty_login;
+    default:
+      return state;
+  }
+}
+
+function register(state = empty_login, action) {
+  switch(action.type) {
+    case 'UPDATE_REGISTER_FORM':
+      return Object.assign({}, state, action.data);
+    case 'CLEAR_REGISTER':
+      return empty_login;
+    default:
+      return state;
+  }
+}
 
 function users(state = [], action) {
   switch (action.type) {
@@ -48,6 +95,8 @@ function form(state = empty_form, action) {
       console.log("/////////here in action.data//////////", action.data);
       console.log("/////////here in action.task in update form//////////", action.task);
       return Object.assign({}, state, action.data);
+    case 'ADD_TASK':
+      return empty_form;
     case 'CLEAR_FORM':
       return empty_form;
     default:
@@ -68,7 +117,7 @@ function root_reducer(state0, action) {
   console.log("state0 in reducer", state0);
   console.log("action in reducer", action);
   // calls multiple reducers here and their output
-  let reducer = combineReducers({users, tasks, form});
+  let reducer = combineReducers({users, tasks, form, login, register, token});
   let state1 = reducer(state0, action);
   console.log("state1 in reducer", state1);
   return deepFreeze(state1);

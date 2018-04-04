@@ -25,7 +25,7 @@ let Tasktracker = connect((state) => state)((props) => {
           <Nav />
           <Route path="/" exact={true} render={() =>
             <div>
-              <TaskForm users={props.users} />
+              <TaskForm users={props.user} />
               <Feed tasks={props.tasks}/>
             </div>
           } />
