@@ -17,8 +17,8 @@ defmodule Tasktracker3.Tasks.Task do
   @doc false
   def changeset(task, attrs) do
     task
-    |> cast(attrs, [:title, :body, :time_taken, :assigned_id, :completed])
-    |> validate_required([:title, :body, :time_taken, :completed])
+    |> cast(attrs, [:title, :body, :time_taken, :assigned_id, :user_id, :completed])
+    |> validate_required([:title, :body, :time_taken, :completed, :assigned_id, :user_id])
     |> validate_change(:time_taken, fn :time_taken, f ->
       if rem(f, 15) == 0 do
         []

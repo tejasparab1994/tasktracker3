@@ -4,7 +4,7 @@ defmodule Tasktracker3Web.TaskController do
   alias Tasktracker3.Tasks
   alias Tasktracker3.Tasks.Task
 
-  action_fallback Tasktracker3Web.FallbackController
+  action_fallback(Tasktracker3Web.FallbackController)
 
   def index(conn, _params) do
     tasks = Tasks.list_tasks()
@@ -12,6 +12,8 @@ defmodule Tasktracker3Web.TaskController do
   end
 
   def create(conn, %{"task" => task_params}) do
+    IO.inspect(task_params)
+
     with {:ok, %Task{} = task} <- Tasks.create_task(task_params) do
       conn
       |> put_status(:created)
@@ -35,6 +37,7 @@ defmodule Tasktracker3Web.TaskController do
 
   def delete(conn, %{"id" => id}) do
     task = Tasks.get_task!(id)
+
     with {:ok, %Task{}} <- Tasks.delete_task(task) do
       send_resp(conn, :no_content, "")
     end

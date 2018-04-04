@@ -2,8 +2,8 @@ import React from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 
 export default function Task(params) {
+
   let task = params.task;
-  console.log("completed?", task.completed);
   return (
     <Card>
       <CardHeader>
@@ -13,12 +13,13 @@ export default function Task(params) {
       </CardHeader>
       <CardBody>
         <div>
-          <p> <b> Assigned by: </b> {task.user.name}</p>
+          {/* Remove this later, the assigned by field */}
+          <p> <b> Assigned By: </b> {task.user.name} </p>
           <p> <b> Description: </b> { task.body }</p>
           <p> <b> Completed: </b> {String(task.completed)}</p>
           <p> <b> Time Taken: </b> {task.time_taken} </p>
         </div>
       </CardBody>
     </Card>
-  );
+);
 }
