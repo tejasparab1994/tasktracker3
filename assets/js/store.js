@@ -48,6 +48,8 @@ function form(state = empty_form, action) {
       console.log("/////////here in action.data//////////", action.data);
       console.log("/////////here in action.task in update form//////////", action.task);
       return Object.assign({}, state, action.data);
+    case 'CLEAR_FORM':
+      return empty_form;
     default:
       return state;
   }

@@ -21,6 +21,9 @@ function TaskForm(params) {
     params.dispatch(action);
   }
 
+  function clear(){
+      params.dispatch({type: 'CLEAR_FORM'});
+  }
 
   function submit(ev) {
     console.log("params.fomr",params.form);
@@ -34,6 +37,7 @@ function TaskForm(params) {
       <FormGroup>
         <Label for="user_id">Assigned by</Label>
         <Input type="select" name="user_id" value={params.form.user_id} onChange={update}>
+          <option></option>
           { users }
         </Input>
       </FormGroup>
@@ -53,6 +57,7 @@ function TaskForm(params) {
       <FormGroup>
         <Label for="assigned" >Assigned to</Label>
         <Input type="select" name="assigned_id" value={params.form.assigned_id} onChange={update}>
+          <option></option>
           { users }
         </Input>
       </FormGroup>
@@ -71,7 +76,7 @@ function TaskForm(params) {
       </FormGroup>
 
       <Button onClick={submit}> Post</Button> &nbsp;
-      <Button onClick={() => alert("TODO: Manage state")}>Clear</Button>
+      <Button onClick={clear}>Clear</Button>
     </div>
           );
         }
