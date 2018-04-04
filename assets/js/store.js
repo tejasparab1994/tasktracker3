@@ -15,6 +15,7 @@ Our state:
       assigned: Number,
       completed: Boolean,
       time_taken: Number,
+      token: string,
   },
   token: {
     id: Number,
@@ -96,7 +97,9 @@ function form(state = empty_form, action) {
       console.log("/////////here in action.task in update form//////////", action.task);
       return Object.assign({}, state, action.data);
     case 'ADD_TASK':
-      return empty_form;
+      return Object.assign({},state, empty_form);
+    case 'SET_TOKEN':
+      return Object.assign({},state,{token: action.token.token});
     case 'CLEAR_FORM':
       return empty_form;
     default:
