@@ -16,7 +16,7 @@ defmodule Tasktracker3Web.TaskController do
     token = task_params["token"]
     {:ok, user_id} = Phoenix.Token.verify(conn, "auth token", token, max_age: 86400)
 
-    if String.to_integer(task_params["user_id"]) != user_id do
+    if task_params["user_id"] != user_id do
       IO.inspect({:bad_match, task_params["user_id"], user_id})
       raise "hax!"
     end

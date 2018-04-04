@@ -7,11 +7,13 @@ import api from '../api';
 function TaskForm(params) {
 
   function update(ev) {
+    console.log("here in params", params)
     let tgt = $(ev.target);
     let data = {};
     console.log("checked value", ev.target.checked);
     let value = ev.target.type === 'checkbox' ? ev.target.checked : tgt.val();
     data[tgt.attr('name')] = value;
+    data["user_id"] = params.user;
     let action = {
       type: 'UPDATE_FORM',
       data: data,
@@ -35,11 +37,11 @@ function TaskForm(params) {
     <div style={{padding: "4ex"}}>
       <h2>New Task</h2>
       <FormGroup>
-        <Label for="user_id">Assigned by</Label>
-        <Input type="select" name="user_id" value={params.form.user_id} onChange={update}>
+        {/* <Label for="user_id">Assigned by</Label>
+          <Input type="select" name="user_id" value={params.form.user_id} onChange={update}>
           <option></option>
           { users }
-        </Input>
+        </Input> */}
       </FormGroup>
 
       <FormGroup>

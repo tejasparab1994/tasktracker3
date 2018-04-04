@@ -40,7 +40,7 @@ defmodule Tasktracker3.Users do
   def get_and_auth_user(name, pass) do
     case user = Repo.one(from(u in User, where: u.name == ^name)) do
       nil ->
-        {:error, :not_found}
+        {:error, "Login unsuccessful"}
 
       _ ->
         case Comeonin.Argon2.check_pass(user, pass) do
@@ -67,6 +67,8 @@ defmodule Tasktracker3.Users do
 
   """
   def create_user(attrs \\ %{}) do
+    IO.puts("in here? in create_user?")
+
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()

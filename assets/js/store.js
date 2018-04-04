@@ -33,6 +33,8 @@ function token(state = null, action) {
     case 'SET_TOKEN':
       console.log("here in set token", action.token);
       return action.token;
+    case 'LOGOUT':
+      return null;
     default:
       return state;
   }
@@ -61,6 +63,8 @@ function register(state = empty_login, action) {
     case 'UPDATE_REGISTER_FORM':
       return Object.assign({}, state, action.data);
     case 'CLEAR_REGISTER':
+      return empty_login;
+    case 'SET_REGISTER_ERROR':
       return empty_login;
     default:
       return state;

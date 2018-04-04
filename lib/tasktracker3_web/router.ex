@@ -21,7 +21,9 @@ defmodule Tasktracker3Web.Router do
     get("/users", PageController, :index)
     get("/tasks", PageController, :index)
     get("/tasks/:id", PageController, :index)
-    get("/users/:id", PageController, :index)
+    get("/assigned", PageController, :index)
+    get("/users/register", PageController, :create)
+    get("/task-form", PageController, :index)
   end
 
   # Other scopes may use custom stacks.

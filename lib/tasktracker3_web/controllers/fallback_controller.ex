@@ -23,4 +23,10 @@ defmodule Tasktracker3Web.FallbackController do
     |> put_status(:im_a_teapot)
     |> render(Tasktracker3Web.ErrorView, :"418")
   end
+
+  def call(conn, {:error, "Register unsuccessful"}) do
+    conn
+    |> put_status(:im_a_teapot)
+    |> render(Tasktracker3Web.ErrorView, :"418")
+  end
 end

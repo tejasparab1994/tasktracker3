@@ -69,6 +69,27 @@ class TheServer {
       }
     });
   }
+
+  create_new_user(data, history)   {
+    console.log("entering create_new_user?",data);
+    $.ajax("/api/v1/users", {
+        method: "post",
+        dataType: "json",
+        contentType: "application/json; charset=UTF-8",
+        data: JSON.stringify(data),
+        success: (resp) => {
+          console.log("response from new user", resp);
+            store.dispatch({
+                type: 'CLEAR_REGISTER',
+                data: resp,
+            });
+
+        },
+        error: (resp) => {
+          console.log("error", resp)
+        }
+    });
+}
 }
 
 

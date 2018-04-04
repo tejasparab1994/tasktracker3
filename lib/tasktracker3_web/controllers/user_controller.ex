@@ -4,19 +4,23 @@ defmodule Tasktracker3Web.UserController do
   alias Tasktracker3.Users
   alias Tasktracker3.Users.User
 
-  action_fallback Tasktracker3Web.FallbackController
+  action_fallback(Tasktracker3Web.FallbackController)
 
   def index(conn, _params) do
     users = Users.list_users()
     render(conn, "index.json", users: users)
   end
 
-  def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Users.create_user(user_params) do
+  def create(conn, user_params = %{"name" => name, "pass" => pass}) do
+    IO.puts("working in create?")
+
+    with {:ok, %User{} = user} <-
+           Tasktracker3.Users.create_user(%{"name" => name, "password_hash" => pass}) do
+      IO.puts("is this working??")
+
       conn
       |> put_status(:created)
-      |> put_resp_header("location", user_path(conn, :show, user))
-      |> render("show.json", user: user)
+      |> render("user.json", user: user)
     end
   end
 
@@ -35,6 +39,7 @@ defmodule Tasktracker3Web.UserController do
 
   def delete(conn, %{"id" => id}) do
     user = Users.get_user!(id)
+
     with {:ok, %User{}} <- Users.delete_user(user) do
       send_resp(conn, :no_content, "")
     end
