@@ -7,7 +7,7 @@ import Nav from './nav';
 import Feed from './feed';
 import Users from './users';
 import TaskForm from './task-form';
-
+import TaskEdit from './task-edit';
 import Assigned from './assigned';
 import api from '../api';
 export default function tasktracker_init(store) {
@@ -37,9 +37,18 @@ let Tasktracker = connect((state) => state)((props) => {
         } />
         <Route path ="/task-form" exact={true} render={() =>
           <div>
-            <TaskForm user={parseInt(props.token.id)} />
+            {props.token ?<TaskForm user={parseInt(props.token.id)} />: <div></div>}
           </div>
         } />
+
+        <Route path = "/task-edit/:task_id" exact={true} render={({match}) =>
+          <div>
+            {props.token ? <TaskEdit form = {_.filter(props.tasks, (pp) => match.params.task_id == pp.id)[0]
+            } users={props.users} user={parseInt(props.token.id)} task_id= {match.params.task_id}/> : <div></div>}
+          </div>
+        } />
+
+
         {/* We have the code ready for your assigned task */}
         <Route path ="/assigned" exact={true} render={() =>
 
@@ -61,7 +70,7 @@ let Tasktracker = connect((state) => state)((props) => {
 
   let RegisterForm = connect((props, {register}) => {return Object.assign({}, props, register);})((props) => {
 
-    
+
     function create_user(ev) {
         console.log("create_user", props);
         api.create_new_user(props.register, props.history);

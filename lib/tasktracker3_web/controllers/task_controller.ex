@@ -12,8 +12,8 @@ defmodule Tasktracker3Web.TaskController do
   end
 
   def create(conn, %{"task" => task_params}) do
-    IO.inspect(task_params)
     token = task_params["token"]
+
     {:ok, user_id} = Phoenix.Token.verify(conn, "auth token", token, max_age: 86400)
 
     if task_params["user_id"] != user_id do
@@ -35,10 +35,18 @@ defmodule Tasktracker3Web.TaskController do
   end
 
   def update(conn, %{"id" => id, "task" => task_params}) do
-    task = Tasks.get_task!(id)
+    token = task_params["token"]
 
-    with {:ok, %Task{} = task} <- Tasks.update_task(task, task_params) do
-      render(conn, "show.json", task: task)
+    with {:ok, user_id} = Phoenix.Token.verify(conn, "auth token", token, max_age: 86400) do
+      task = Tasks.get_task!(Map.get(task_params, "id"))
+
+      with {:ok, %Task{} = task} <- Tasks.update_task(task, task_params) do
+        tasks = Tasks.get_task_by_user_id(user_id)
+
+        conn
+        |> put_status(:ok)
+        |> render(conn, "index.json", tasks: tasks)
+      end
     end
   end
 

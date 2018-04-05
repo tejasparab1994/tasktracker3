@@ -20,7 +20,7 @@ defmodule Tasktracker3Web.Router do
     get("/", PageController, :index)
     get("/users", PageController, :index)
     get("/tasks", PageController, :index)
-    get("/tasks/:id", PageController, :index)
+    get("/task-edit/:task_id", PageController, :index)
     get("/assigned", PageController, :index)
     get("/users/register", PageController, :create)
     get("/task-form", PageController, :index)

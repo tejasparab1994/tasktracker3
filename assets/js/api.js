@@ -24,7 +24,6 @@ class TheServer {
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify({"task": data}),
       success: (resp) => {
-        console.log("response", resp);
         store.dispatch({
           type: 'ADD_TASK',
           task: resp.data,
@@ -48,14 +47,12 @@ class TheServer {
   }
 
   submit_login(data) {
-    console.log("ajax working?",data);
     $.ajax("/api/v1/token", {
       method: "post",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
       data: JSON.stringify(data),
       success: (resp) => {
-        console.log("response", resp);
         store.dispatch({
           type: 'SET_TOKEN',
           token: resp,
@@ -71,25 +68,43 @@ class TheServer {
   }
 
   create_new_user(data, history)   {
-    console.log("entering create_new_user?",data);
     $.ajax("/api/v1/users", {
-        method: "post",
-        dataType: "json",
-        contentType: "application/json; charset=UTF-8",
-        data: JSON.stringify(data),
-        success: (resp) => {
-          console.log("response from new user", resp);
-            store.dispatch({
-                type: 'CLEAR_REGISTER',
-                data: resp,
-            });
+      method: "post",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify(data),
+      success: (resp) => {
+        store.dispatch({
+          type: 'CLEAR_REGISTER',
+          data: resp,
+        });
 
-        },
-        error: (resp) => {
-          console.log("error", resp)
-        }
+      },
+      error: (resp) => {
+        console.log("error", resp)
+      }
     });
-}
+  }
+
+  edit_task(data) {
+    console.log("entering edit task", data);
+    $.ajax("/api/v1/tasks", {
+      method: "post",
+      dataType: "json",
+      contentType: "application/json; charset=UTF-8",
+      data: JSON.stringify({"task": data}),
+      success: (resp) => {
+        console.log("response", resp);
+        store.dispatch({
+          type: 'EDIT_TASK',
+          task: resp.data,
+        });
+      },
+      error: (resp) => {
+        console.log("error", resp)
+      }
+    });
+  }
 }
 
 
