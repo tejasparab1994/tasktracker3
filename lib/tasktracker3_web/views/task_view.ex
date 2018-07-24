@@ -12,6 +12,10 @@ defmodule Tasktracker3Web.TaskView do
   end
 
   def render("task.json", %{task: task}) do
+    # IO.inspect("hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! from the other sidde")
+    # IO.inspect(task)
+    # IO.inspect("hello!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! from the other sidde")
+
     %{
       id: task.id,
       title: task.title,

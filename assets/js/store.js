@@ -87,11 +87,11 @@ function tasks(state = [], action) {
     case 'TASKS_LIST':
     return [...action.tasks];
     case 'ADD_TASK':
-    console.log("//////action.task/////////", action.task);
+
     return [action.task, ...state];
-    case 'EDIT_TASK':
+    case 'UPDATE_TASK':
+    console.log("//////action.task/////////", action.task);
     return [action.task, ..._.reject(state, function(task){return task.id == action.task.id})];
-    return [...action.data, ...state];
     default:
     return state;
   }
@@ -118,12 +118,14 @@ function form(state = empty_form, action) {
 function edit_task(state = null, action) {
   switch (action.type) {
     case 'EDIT_FORM':
-      console.log("////////action edit task lets see", action.data)
-      return Object.assign({}, state, action.data);
+    console.log("////////action edit task lets see", action.data)
+    return Object.assign({}, state, action.data);
     case 'SET_TOKEN':
-      return Object.assign({},state,{token: action.token.token});
-      case 'CLEAR_FORM':
-      return empty_form;
+    return Object.assign({},state,{token: action.token.token});
+    case 'UPDATE_TASK':
+    return null;
+    case 'CLEAR_FORM':
+    return empty_form;
     default:
     return null;
   }

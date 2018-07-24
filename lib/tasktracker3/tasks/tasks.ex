@@ -39,8 +39,8 @@ defmodule Tasktracker3.Tasks do
   """
   def get_task!(id) do
     Repo.get!(Task, id)
-    |> Repo.preload(:user)
-    |> Repo.preload(:assigned)
+    # |> Repo.preload(:user)
+    # |> Repo.preload(:assigned)
   end
 
   @doc """
@@ -56,8 +56,6 @@ defmodule Tasktracker3.Tasks do
 
   """
   def create_task(attrs \\ %{}) do
-    IO.inspect("are we failing in tasks.ex create-task")
-
     case %Task{} |> Task.changeset(attrs) |> Repo.insert() do
       {:ok, task} ->
         {:ok,
@@ -82,17 +80,16 @@ defmodule Tasktracker3.Tasks do
 
   """
   def update_task(%Task{} = task, attrs) do
-    task
-    |> Task.changeset(attrs)
-    |> Repo.update()
-    |> Repo.preload(:user)
-    |> Repo.preload(:assigned)
-  end
+    # IO.inspect task
+    case task
+         |> Task.changeset(attrs)
+         |> Repo.update() do
+      {:ok, new_task} ->
+        {:ok, new_task |> Repo.preload(:user) |> Repo.preload(:assigned)}
 
-  def get_task_by_user_id(user_id) do
-    query = from(t in Task, where: t.user_id == ^user_id)
-
-    Repo.all(query)
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 
   @doc """

@@ -86,22 +86,22 @@ class TheServer {
     });
   }
 
-  edit_task(data) {
-    console.log("entering edit task", data);
-    $.ajax("/api/v1/tasks", {
-      method: "post",
+  edit_task(data, token, id) {
+    console.log("entering edit task in api", data);
+    $.ajax("/api/v1/tasks/" + data.id, {
+      method: "put",
       dataType: "json",
       contentType: "application/json; charset=UTF-8",
-      data: JSON.stringify({"task": data}),
+      data: JSON.stringify({token: token, "task": data, "id":id }),
       success: (resp) => {
         console.log("response", resp);
         store.dispatch({
-          type: 'EDIT_TASK',
+          type: 'UPDATE_TASK',
           task: resp.data,
         });
       },
       error: (resp) => {
-        console.log("error", resp)
+        console.error("error", resp)
       }
     });
   }

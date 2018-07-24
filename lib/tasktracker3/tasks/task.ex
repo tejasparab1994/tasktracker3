@@ -20,10 +20,10 @@ defmodule Tasktracker3.Tasks.Task do
     |> cast(attrs, [:title, :body, :time_taken, :assigned_id, :user_id, :completed])
     |> validate_required([:title, :body, :time_taken, :completed, :assigned_id, :user_id])
     |> validate_change(:time_taken, fn :time_taken, f ->
-      if rem(f, 15) == 0 do
+      if rem(f, 15) == 0 && f >= 0 do
         []
       else
-        [time_taken: "Invalid input, not a multiple of 15"]
+        [time_taken: "Invalid time, not a multiple of 15"]
       end
     end)
   end

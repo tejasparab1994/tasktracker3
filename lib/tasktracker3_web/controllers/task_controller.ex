@@ -34,19 +34,24 @@ defmodule Tasktracker3Web.TaskController do
     render(conn, "show.json", task: task)
   end
 
-  def update(conn, %{"id" => id, "task" => task_params}) do
-    token = task_params["token"]
+  def update(conn, %{"id" => id, "token" => token, "task" => task_params}) do
+    IO.inspect(task_params)
+    IO.inspect("in here inside update?")
+    task = Tasks.get_task!(id)
+    {:ok, user_id} = Phoenix.Token.verify(conn, "auth token", token, max_age: 86400)
 
-    with {:ok, user_id} = Phoenix.Token.verify(conn, "auth token", token, max_age: 86400) do
-      task = Tasks.get_task!(Map.get(task_params, "id"))
+    if task_params["user_id"] != user_id do
+      raise "Unauthorized user"
+    end
 
-      with {:ok, %Task{} = task} <- Tasks.update_task(task, task_params) do
-        tasks = Tasks.get_task_by_user_id(user_id)
+    {:ok, new_task} = Tasks.update_task(task, task_params)
+    IO.inspect(new_task)
 
-        conn
-        |> put_status(:ok)
-        |> render(conn, "index.json", tasks: tasks)
-      end
+    with %Task{} = task <- new_task do
+      conn
+      |> put_status(:created)
+      |> put_resp_header("location", task_path(conn, :show, task))
+      |> render("show.json", task: task)
     end
   end
 

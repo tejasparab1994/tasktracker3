@@ -7,7 +7,6 @@ import api from '../api';
 function TaskEdit(params) {
 
   function update(ev) {
-    console.log("here inside edit params", params)
     let tgt = $(ev.target);
     let data = {};
     let value = ev.target.type === 'checkbox' ? ev.target.checked : tgt.val();
@@ -16,22 +15,25 @@ function TaskEdit(params) {
     data["token"] = params.token;
     console.log(params.token);
     data["task_id"] = params.task_id;
+    data["id"] = params.form.id;
     let action = {
       type: 'EDIT_FORM',
       data: data,
     };
 
-    console.log("edit form",action);
     params.dispatch(action);
   }
 
   function clear(){
-      params.dispatch({type: 'CLEAR_FORM'});
+    params.dispatch({type: 'CLEAR_FORM'});
   }
 
   function submit(ev) {
     console.log("params.fomr",params.form);
-    api.edit_task(params.form);
+    if (params.edit_task){
+      console.log(params.form.id);
+      api.edit_task(params.edit_task, params.token, params.form.id);
+    }
   }
 
   let users = _.map(params.users, (uu) => <option key = {uu.id} value={uu.id}>{uu.name}</option>);
@@ -49,7 +51,7 @@ function TaskEdit(params) {
 
       <FormGroup>
         <Label for="title" >Title</Label>
-        <Input name="title" defaultValue={params.form.title}
+        <Input type = "text" name="title" defaultValue={params.form.title}
           onChange={update}/>
       </FormGroup>
 
@@ -83,13 +85,14 @@ function TaskEdit(params) {
       <Button onClick={submit}> Post</Button> &nbsp;
       <Button onClick={clear}>Clear</Button>
     </div>
-          );
-        }
-        function state2props(state) {
-          return {
-            dispatch: state.dispatch,
-            token: state.token,
-          };
-        }
+        );
+      }
 
-export default connect(state2props)(TaskEdit)
+      function state2props(state) {
+        return {
+          edit_task: state.edit_task,
+          token: state.token.token,
+        };
+      }
+
+      export default connect(state2props)(TaskEdit);
